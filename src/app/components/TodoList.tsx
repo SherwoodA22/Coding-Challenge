@@ -16,29 +16,42 @@ const  TodoList: React.FC<TodoListProps> = ({initialTodos}) => {
             if (create.value !== ""){
             const newTodo: Todo = {userId: 1, id: Date.now(), completed: false, title: create.value }
                 setTodos([...todos, newTodo])
-                console.log(todos)
             } else {
-                alert("Please Enter A Title");
+                alert("Title Should not Be Empty");
             }
          }
     }
     
     function editTodo(id: number, value: string) {
+        if (value !== "") {
         setTodos(prevTodos => prevTodos.map(todo => {
             if (todo.id === id) {
-                todo.title = value;
-                console.log(todos)
-                return todo;
+                return { ...todo, title: value };
             } else {
                 return todo;
             }
         }
             
         ))
+        } else {
+            alert("Please enter a title.")
+        }   
     }
     
     function deleteTodo(id: number) {
         setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+    }
+
+    function toggleTodo(id: number) {
+        setTodos(prevTodos => prevTodos.map(todo => {
+            if (todo.id === id) {
+                return { ...todo, completed: !todo.completed };
+            } else {
+               
+                return todo;
+            }
+        }
+        ));
     }
     
     return (
@@ -48,13 +61,15 @@ const  TodoList: React.FC<TodoListProps> = ({initialTodos}) => {
             <button onClick={() => addTodo("create")}>Create</button>
             {todos.map((todo) => {
         return (
-            <div><span>Todo:</span>
+            <div key={todo.id}>
+                <span>Todo:</span>
                 <input
 
                     type="text"
                     value={todo.title}
                     onChange={e => editTodo(todo.id, e.target.value)}/>
                     <span>Completed: {todo.completed ? "True " : "False"}</span>
+                    <button onClick={() => toggleTodo(todo.id)}>Completed</button>
                     <button onClick={() => deleteTodo(todo.id)}>Delete</button>
 
             </div>

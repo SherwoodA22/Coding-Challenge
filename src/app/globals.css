@@ -56,3 +56,7 @@ button:hover {
   background-color: rgb(150,150,150);
   border-color: rgb(150,150,150)
 }
+
+#loading {
+  font-size: 50px;
+}
